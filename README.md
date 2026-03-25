@@ -95,20 +95,6 @@ The application will be available at `http://localhost:8080`
 
 - `/ws` - real-time communication interface
 
-## Project Structure
-
-- `src/main/java/com/jvmd/amv/` - Main package
-  - `AmvApplication.java` - Main application class
-  - `controllers/` - REST API controllers
-  - `service/` - Business logic services
-  - `model/` - JPA entities and models
-  - `repository/` - Repository interfaces
-  - `config/` - Configuration classes
-  - `filters/` - Security filters
-  - `util/` - Utility classes
-- `src/main/resources/` - Configuration files
-- `src/test/` - Test classes
-
 ## Examples
 
 Login to the application:
@@ -151,7 +137,6 @@ curl -X POST http://localhost:8080/api/news \
 
 ## Security
 
-The application uses:
 - jwt tokens for authentication
 - spring security for authorization
 - role-based access control
