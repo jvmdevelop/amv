@@ -33,7 +33,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/public/**").permitAll()
                         .requestMatchers("/ws/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/news").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/anime/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/genres/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/episodes/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/stream/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/rooms/**").permitAll()
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 

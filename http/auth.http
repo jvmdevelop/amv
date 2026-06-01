@@ -1,36 +1,77 @@
-### Register a new user
-POST http://localhost:8080/api/v1/public/auth/auth?username=mono&email=mono@gmail.com&password=19283746
+### Register
+POST http://localhost:8080/api/v1/public/auth/auth?username=admin&email=admin@test.com&password=admin123
 
 ### Login
-POST http://localhost:8080/api/v1/public/auth/login?username=mono&password=19283746
+POST http://localhost:8080/api/v1/public/auth/login?username=admin&password=admin123
 
-### Get current user (requires Authorization header)
+### Me
 GET http://localhost:8080/api/v1/public/auth/me
 Authorization: Bearer {{token}}
 
-### Get all news
-GET http://localhost:8080/api/news?count=10
-
-### Create news (requires Authorization)
-POST http://localhost:8080/api/news
+### Create genre
+POST http://localhost:8080/api/v1/admin/genres
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{
-  "title": "Breaking News",
-  "content": "News content here"
-}
+{"name": "Action", "description": "Action anime"}
 
-### Update news (requires Authorization)
-PUT http://localhost:8080/api/news/1
+### List genres
+GET http://localhost:8080/api/v1/genres
+
+### Create anime
+POST http://localhost:8080/api/v1/admin/anime?genreIds=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-{
-  "title": "Updated Title",
-  "content": "Updated content"
-}
+{"title": "Naruto", "description": "Ninja story", "status": "COMPLETED", "releaseYear": 2002}
 
-### Delete news (requires Authorization)
-DELETE http://localhost:8080/api/news/1
+### List anime
+GET http://localhost:8080/api/v1/anime?page=0&size=10
+
+### Get anime
+GET http://localhost:8080/api/v1/anime/1
+
+### Search anime
+GET http://localhost:8080/api/v1/anime/search?q=naruto
+
+### Upload cover (use file picker in IDE)
+POST http://localhost:8080/api/v1/admin/anime/1/cover
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="cover.jpg"
+Content-Type: image/jpeg
+
+< ./cover.jpg
+--boundary--
+
+### Create episode
+POST http://localhost:8080/api/v1/admin/episodes/anime/1?episodeNumber=1&title=Pilot
+Authorization: Bearer {{token}}
+
+### List episodes
+GET http://localhost:8080/api/v1/episodes/anime/1
+
+### Stream video
+GET http://localhost:8080/api/v1/stream/video/1
+
+### Add to watchlist
+POST http://localhost:8080/api/v1/watchlist/1
+Authorization: Bearer {{token}}
+
+### Get watchlist
+GET http://localhost:8080/api/v1/watchlist
+Authorization: Bearer {{token}}
+
+### Toggle favorite
+POST http://localhost:8080/api/v1/watchlist/1/favorite
+Authorization: Bearer {{token}}
+
+### Get favorites
+GET http://localhost:8080/api/v1/watchlist/favorites
+Authorization: Bearer {{token}}
+
+### Remove from watchlist
+DELETE http://localhost:8080/api/v1/watchlist/1
 Authorization: Bearer {{token}}

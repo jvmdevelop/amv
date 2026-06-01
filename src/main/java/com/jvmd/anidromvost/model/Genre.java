@@ -11,17 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "news")
-public class News {
+@Table(name = "genres")
+public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    private String content;
-
-    @ManyToOne
-    private User user;
-
+    private String description;
 }
