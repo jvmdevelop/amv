@@ -117,7 +117,7 @@ Host controls playback, everyone sees it in real time.
 
 STOMP endpoint: `/ws`
 
-**Watch Together** — subscribe to `/topic/room/{code}`, send sync events to `/app/room/{code}/sync`, chat to `/app/room/{code}/chat`:
+**Watch Together** - subscribe to `/topic/room/{code}`, send sync events to `/app/room/{code}/sync`, chat to `/app/room/{code}/chat`:
 
 ```json
 {"type": "PLAY",  "username": "user1", "timestamp": 42.5}
@@ -126,7 +126,7 @@ STOMP endpoint: `/ws`
 {"type": "CHAT",  "username": "user1", "message": "best scene"}
 ```
 
-**New episodes** — subscribe to `/topic/new-episodes` for upload notifications.
+**New episodes** - subscribe to `/topic/new-episodes` for upload notifications.
 
 ## License
 
