@@ -3,7 +3,6 @@ package com.jvmd.anidromvost.controllers;
 import com.jvmd.anidromvost.model.News;
 import com.jvmd.anidromvost.service.NewsService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,24 +10,28 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/news")
 public class NewsController {
     private final NewsService newsService;
 
-    @GetMapping("/public/news")
-    public ResponseEntity<List<News>> getNews(@RequestParam Long count) {
+    @GetMapping
+    public ResponseEntity<List<News>> getNews(@RequestParam(defaultValue = "20") Long count) {
         return ResponseEntity.ok(newsService.findAllWithCountFilter(count));
     }
 
-    @PostMapping("/api/v1/news/post")
+    @PostMapping
     public ResponseEntity<News> postNews(@RequestBody News news) throws Exception {
         return ResponseEntity.ok(newsService.post(news));
     }
 
-    @PostMapping("/api/v1/news/delete")
-    public ResponseEntity<Boolean> deleteNews(@RequestBody News news) throws Exception {
-        return ResponseEntity.ok(newsService.delete(news));
+    @PutMapping("/{id}")
+    public ResponseEntity<News> updateNews(@PathVariable Long id, @RequestBody News news) throws Exception {
+        return ResponseEntity.ok(newsService.update(id, news));
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteNews(@PathVariable Long id) throws Exception {
+        newsService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

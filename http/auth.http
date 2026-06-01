@@ -1,1 +1,36 @@
-POST localhost:8080/api/v1/public/auth/auth?username=mono&email=mono.gmail.com&password=19283746
+### Register a new user
+POST http://localhost:8080/api/v1/public/auth/auth?username=mono&email=mono@gmail.com&password=19283746
+
+### Login
+POST http://localhost:8080/api/v1/public/auth/login?username=mono&password=19283746
+
+### Get current user (requires Authorization header)
+GET http://localhost:8080/api/v1/public/auth/me
+Authorization: Bearer {{token}}
+
+### Get all news
+GET http://localhost:8080/api/news?count=10
+
+### Create news (requires Authorization)
+POST http://localhost:8080/api/news
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Breaking News",
+  "content": "News content here"
+}
+
+### Update news (requires Authorization)
+PUT http://localhost:8080/api/news/1
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "content": "Updated content"
+}
+
+### Delete news (requires Authorization)
+DELETE http://localhost:8080/api/news/1
+Authorization: Bearer {{token}}

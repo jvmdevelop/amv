@@ -4,11 +4,10 @@ import com.jvmd.anidromvost.model.News;
 import com.jvmd.anidromvost.repository.NewsRepo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -16,35 +15,30 @@ import java.util.stream.Collectors;
 public class NewsService {
     private NewsRepo newsRepo;
 
-    public News post(News news) throws Exception {
-        try {
-            return  newsRepo.save(news);
-        }catch (Exception e) {
-            log.error(e.getMessage());
-            throw new Exception("failed to save new news", e);
-        }
+    public News post(News news) {
+        return newsRepo.save(news);
     }
 
-
-    public News findById(Long id) throws Exception {
-        try {
-            return newsRepo.findById(id).get();
-        }catch (Exception exception){
-            log.error("failed to find new news ", exception);
-            throw new Exception("news no find");
-        }
+    public News findById(Long id) {
+        return newsRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("News not found with id: " + id));
     }
 
-    public boolean delete(News news){
-        try {
-            newsRepo.delete(news);
-            return true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public News update(Long id, News newsData) {
+        News existing = findById(id);
+        existing.setTitle(newsData.getTitle());
+        existing.setContent(newsData.getContent());
+        return newsRepo.save(existing);
     }
 
-    public List<News> findAllWithCountFilter(Long count){
-        return newsRepo.findAll().stream().limit(count).collect(Collectors.toList());
+    public void deleteById(Long id) {
+        if (!newsRepo.existsById(id)) {
+            throw new RuntimeException("News not found with id: " + id);
+        }
+        newsRepo.deleteById(id);
+    }
+
+    public List<News> findAllWithCountFilter(Long count) {
+        return newsRepo.findAll(PageRequest.of(0, count.intValue())).getContent();
     }
 }

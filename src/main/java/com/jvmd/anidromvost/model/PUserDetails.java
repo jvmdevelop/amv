@@ -20,8 +20,6 @@ public class PUserDetails implements UserDetails {
     private String password;
     private List<GrantedAuthority> authorities;
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
@@ -29,11 +27,11 @@ public class PUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return username;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return password;
+        return username;
     }
 }

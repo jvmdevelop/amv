@@ -18,12 +18,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-           return userRepo.getUserByName(username).toUserDetails();
-        }catch (Exception e){
-            log.error(e.getMessage());
-            throw new UsernameNotFoundException(e.getMessage());
+        User user = userRepo.getUserByName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
         }
+        return user.toUserDetails();
     }
 
     public User findByUsername(String username) {
@@ -31,32 +30,14 @@ public class UserService implements UserDetailsService {
     }
 
     public User save(User user) {
-        try {
-            log.info("Saving user: {}", user);
-            return userRepo.save(user);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new UsernameNotFoundException(e.getMessage());
-        }
+        return userRepo.save(user);
     }
 
     public boolean existsByUsername(String username) {
-       try {
-           log.info("Checking if user exists with username: {}", username);
-           return userRepo.existsByName(username);
-       }catch (Exception e){
-           log.error(e.getMessage());
-           throw new UsernameNotFoundException(e.getMessage());
-       }
+        return userRepo.existsByName(username);
     }
 
     public boolean deleteByUsername(String username) {
-         try {
-             log.info("Delete user with username: {}", username);
-             return userRepo.deleteByName(username);
-         }catch (Exception e){
-             log.error(e.getMessage());
-             throw new UsernameNotFoundException(e.getMessage());
-         }
+        return userRepo.deleteByName(username);
     }
 }

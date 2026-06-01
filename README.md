@@ -1,155 +1,59 @@
 <h1 align="center">amv</h1>
-<p align="center" >
+<p align="center">
   <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?logo=openjdk&logoColor=white">
   <img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=spring-boot&logoColor=white">
   <img alt="PostgreSQL" src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white">
   <img alt="Redis" src="https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white">
-  <img alt="Status" src="https://img.shields.io/badge/status-beta-yellow">
   <img alt="License" src="https://img.shields.io/badge/license-ISC-blue">
 </p>
 
-<br>
+Spring Boot backend: auth (JWT), news CRUD, websocket.
 
-**amv** is a modern web application built with Spring Boot, featuring user authentication, news management, and real-time WebSocket communication capabilities.
+## Stack
 
-## Features
+Java 17, Spring Boot 3.4.5, PostgreSQL, Redis, Spring Modulith
 
-- jwt-based authentication system with Spring Security
-- user registration and login functionality
-- news management system with CRUD operations
-- real-time websocket support
-- postgresql database with JPA
-- redis for session management and caching
-- restful API design
-- spring modulith for modular architecture
-- maven build system
-
-## Installation
-
-### Prerequisites:
-
-- Java 17 
-- Maven 3.6+
-- PostgreSQL database
-- Redis server
-- Docker & Docker Compose (optional)
-
-### From source:
+## Run
 
 ```bash
-git clone git@github.com:jvmdevelop/amv.git
-cd amv
-mvn clean install
-mvn spring-boot:run
-```
-
-### With Docker Compose:
-
-```bash
-cd amv
+# with docker
 docker-compose up
-```
 
-## Usage
-
-### Configuration
-
-Configure your `application.properties`:
-
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/amv
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.data.redis.host=localhost
-spring.data.redis.port=6379
-```
-
-### Running the application:
-
-```bash
+# without docker (needs postgres + redis running)
 mvn spring-boot:run
 ```
 
-The application will be available at `http://localhost:8080` 
+Config through env vars or `application.properties`:
 
-## API Endpoints
-
-### Authentication
-
-| Endpoint | Method | Description |
-|:---------|:------:|:------------|
-| `/api/v1/public/auth/login` | POST | user login |
-| `/api/v1/public/auth/auth` | POST | user registration |
-| `/api/v1/public/auth/me` | GET | get current user info |
-
-### News Management
-
-| Endpoint | Method | Description |
-|:---------|:------:|:------------|
-| `/api/news` | GET | get all news |
-| `/api/news` | POST | create news article |
-| `/api/news/{id}` | PUT | update news article |
-| `/api/news/{id}` | DELETE | delete news article |
-
-## WebSocket Endpoints
-
-- `/ws` - real-time communication interface
-
-## Examples
-
-Login to the application:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/public/auth/login \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=your_username&password=your_password"
+```
+DB_HOST, DB_PORT, DB_NAME, DB_USERNAME, DB_PASSWORD
+REDIS_HOST, REDIS_PORT
+JWT_EXPIRATION
 ```
 
-Register a new user:
+## API
 
-```bash
-curl -X POST http://localhost:8080/api/v1/public/auth/auth \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=newuser&password=password123&email=user@example.com"
+### Auth
+
+```
+POST /api/v1/public/auth/auth?username=x&password=x&email=x   — register
+POST /api/v1/public/auth/login?username=x&password=x           — login
+GET  /api/v1/public/auth/me                                    — current user (needs token)
 ```
 
-Create a news article:
+### News (needs token except GET)
 
-```bash
-curl -X POST http://localhost:8080/api/news \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -d '{"title": "Breaking News", "content": "News content here"}'
+```
+GET    /api/news?count=10   — list
+POST   /api/news            — create
+PUT    /api/news/{id}       — update
+DELETE /api/news/{id}       — delete
 ```
 
-## Dependencies
+### WebSocket
 
-- spring boot 3.4.5
-- spring security
-- spring data jpa
-- spring websocket
-- spring modulith
-- postgresql driver
-- redis
-- jwt 
-- lombok
-- maven
-
-## Security
-
-- jwt tokens for authentication
-- spring security for authorization
-- role-based access control
-- httpOnly cookies for token storage
-
-## Contributing
-
-1. fork the repository
-2. create a feature branch
-3. submit a pull request
+STOMP endpoint at `/ws`
 
 ## License
 
-ISC — see [LICENSE](LICENSE) for details.
-
-## EOF
+ISC
